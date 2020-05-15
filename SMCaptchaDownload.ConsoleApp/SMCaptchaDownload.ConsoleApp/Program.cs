@@ -1,24 +1,28 @@
-﻿using OpenQA.Selenium;
+﻿// Osman Yavuz
+// omnyvz.yazilim@gmail.com
+// 
+// SMCaptchaDownload.ConsoleApp - Program.cs
+// Creation Date: 15.05.2020 23:49
+
 using System;
 using System.Drawing;
 using System.Threading;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Tiny.RestClient;
 
 namespace SMCaptchaDownload.ConsoleApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            
             try
             {
                 // Sürücü ve ayar
-                ChromeOptions options = new ChromeOptions();
+                var options = new ChromeOptions();
                 options.AddArgument("--window-size=800,600");
                 IWebDriver driver = new ChromeDriver(options);
-                
+
                 // Siteye Git
                 driver.Navigate().GoToUrl("https://tensorcrypto.website/etc/");
 
@@ -28,22 +32,22 @@ namespace SMCaptchaDownload.ConsoleApp
 
                 // Bekle
                 Thread.Sleep(2000);
-                
+
 
                 // Ekran kaydı al
-                Screenshot image = ((ITakesScreenshot)driver).GetScreenshot();
+                var image = ((ITakesScreenshot) driver).GetScreenshot();
                 image.SaveAsFile(
                     @"C:\Users\omnyvz\Desktop\test.png",
                     ScreenshotImageFormat.Png);
 
                 // Ekran kaydından captcha bölümünü kes
-                Image img = Image.FromFile(@"C:\Users\omnyvz\Desktop\test.png");
-                Bitmap bmpImage = new Bitmap(img);
-                Bitmap bmpCrop = bmpImage.Clone(
+                var img = Image.FromFile(@"C:\Users\omnyvz\Desktop\test.png");
+                var bmpImage = new Bitmap(img);
+                var bmpCrop = bmpImage.Clone(
                     new Rectangle(
                         235, 57, // captcha konumu
                         300, 150 // captcha boyutu
-                        ), bmpImage.PixelFormat);
+                    ), bmpImage.PixelFormat);
 
                 // Captcha 
                 bmpCrop.Save(@"C:\Users\omnyvz\Desktop\captcha.jpg");
@@ -55,6 +59,5 @@ namespace SMCaptchaDownload.ConsoleApp
 
             Console.ReadLine();
         }
-
     }
 }
